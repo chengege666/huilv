@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多功能计算器 - 汇率转换、费用计算与储蓄规划</title>
+    <title>多功能计算器 - 汇率转换、费用计算</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -25,14 +23,14 @@
             padding: 20px;
         }
         
-        。header {
+        .header {
             text-align: center;
             margin-bottom: 20px;
             color: white;
             padding: 20px 20px 0 20px;
         }
         
-        。header h1 {
+        .header h1 {
             font-size: 2.8rem;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -407,135 +405,6 @@
             color: #6c757d;
         }
         
-        /* 储蓄计算器特定样式 */
-        .savings-mode-selector {
-            display: flex;
-            background: #f8f9fa;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        .savings-mode-btn {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            background: rgba(0, 0, 0, 0.05);
-        }
-        
-        .savings-mode-btn:hover {
-            background: rgba(0, 0, 0, 0.08);
-        }
-        
-        .savings-mode-btn.active {
-            background: white;
-            border-bottom: 3px solid #4361ee;
-            color: #4361ee;
-        }
-        
-        .savings-result-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .savings-result-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #4361ee;
-            margin: 10px 0;
-        }
-        
-        .savings-result-label {
-            font-size: 1rem;
-            color: #7f8c8d;
-        }
-        
-        .savings-progress-container {
-            margin: 20px 0;
-        }
-        
-        .savings-progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #7f8c8d;
-        }
-        
-        .savings-progress-bar {
-            height: 16px;
-            background: #ecf0f1;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .savings-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4361ee, #4895ef);
-            border-radius: 8px;
-            transition: width 0.8s ease;
-        }
-        
-        .savings-chart-container {
-            height: 250px;
-            margin-top: 25px;
-        }
-        
-        .savings-summary {
-            background: #e8f4fc;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        
-        .savings-summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #d6eaf8;
-            font-size: 0.9rem;
-        }
-        
-        .savings-summary-item:last-child {
-            border-bottom: none;
-        }
-        
-        .savings-highlight {
-            font-weight: 600;
-            color: #212529;
-        }
-        
-        .savings-frequency-selector {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .savings-frequency-btn {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.85rem;
-        }
-        
-        .savings-frequency-btn.active {
-            background: #4361ee;
-            color: white;
-            border-color: #4361ee;
-        }
-        
         /* 响应式设计 */
         @media (max-width: 576px) {
             .tabs-nav {
@@ -551,26 +420,22 @@
             .action-buttons {
                 flex-direction: column;
             }
-            .savings-mode-selector {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <h1><i class="fas fa-calculator"></i> 多功能计算器</h1>
-        <p>汇率转换、费用计算与储蓄规划一站式解决方案</p>
+        <p>汇率转换、费用计算一站式解决方案</p>
     </header>
 
     <nav class="tabs-nav">
         <button class="tab-button active" data-tab="exchange">汇率转换</button>
         <button class="tab-button" data-tab="cost">费用计算</button>
-        <button class="tab-button" data-tab="savings">储蓄计算</button>
     </nav>
     
     <main class="main-container">
-
+        <!-- 汇率转换标签 -->
         <section id="exchange" class="tab-content active">
             <div class="calculator-container">
                 <div class="card">
@@ -587,7 +452,7 @@
                     <div class="input-group">
                         <label class="input-label" for="amount">金额</label>
                         <div class="input-container">
-                            <input type="number" class="input-field" id="amount" placeholder="请输入金额" value="">
+                            <input type="number" class="input-field" id="amount" placeholder="请输入金额" value="" min="0.01" step="0.01">
                         </div>
                     </div>
                     
@@ -673,6 +538,7 @@
             </div>
         </section>
 
+        <!-- 费用计算标签 -->
         <section id="cost" class="tab-content">
              <div class="calculator-container">
                 <div class="card">
@@ -731,652 +597,184 @@
                 </div>
             </div>
         </section>
-
-        <section id="savings" class="tab-content">
-            <div class="calculator-container">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-piggy-bank"></i>
-                        </div>
-                        <div>
-                            <h2 class="card-title">储蓄计算器</h2>
-                            <p class="card-subtitle">规划您的储蓄目标</p>
-                        </div>
-                    </div>
-                    
-                    <div id="savings-calc-app">
-                        <div class="savings-mode-selector">
-                            <div 
-                                class="savings-mode-btn" 
-                                :class="{active: currentMode === 'target'}"
-                                @click="currentMode = 'target'">
-                                存钱买什么？
-                            </div>
-                            <div 
-                                class="savings-mode-btn" 
-                                :class="{active: currentMode === 'amount'}"
-                                @click="currentMode = 'amount'">
-                                能存下多少？
-                            </div>
-                            <div 
-                                class="savings-mode-btn" 
-                                :class="{active: currentMode === 'time'}"
-                                @click="currentMode = 'time'">
-                                需要存多久？
-                            </div>
-                        </div>
-                        
-                        <div v-if="currentMode === 'target'">
-                            <div class="input-group">
-                                <label class="input-label" for="savings-targetAmount">目标金额（元）</label>
-                                <div class="input-container">
-                                    <input 
-                                        type="number" 
-                                        class="input-field" 
-                                        id="savings-targetAmount" 
-                                        v-model.number="targetAmount" 
-                                        placeholder="请输入目标金额"
-                                        min="0">
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label class="input-label" for="savings-targetTime">计划完成时间</label>
-                                <div class="input-container">
-                                    <input 
-                                        type="number" 
-                                        class="input-field" 
-                                        id="savings-targetTime" 
-                                        v-model.number="timeValue" 
-                                        placeholder="请输入时间数值"
-                                        min="1">
-                                    <select class="select-field" v-model="timeUnit" style="margin-top: 10px;">
-                                        <option value="months">月</option>
-                                        <option value="years">年</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div v-if="currentMode === 'amount'">
-                            <div class="input-group">
-                                <label class="input-label" for="savings-monthlyDeposit">每月存款金额（元）</label>
-                                <div class="input-container">
-                                    <input 
-                                        type="number" 
-                                        class="input-field" 
-                                        id="savings-monthlyDeposit" 
-                                        v-model.number="monthlyDeposit" 
-                                        placeholder="请输入每月存款金额"
-                                        min="0">
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label class="input-label" for="savings-timeValue">计划储蓄时间</label>
-                                <div class="input-container">
-                                    <input 
-                                        type="number" 
-                                        class="input-field" 
-                                        id="savings-timeValue" 
-                                        v-model.number="timeValue" 
-                                        placeholder="请输入时间数值"
-                                        min="1">
-                                    <select class="select-field" v-model="timeUnit" style="margin-top: 10px;">
-                                        <option value="months">月</option>
-                                        <option value="years">年</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div v-if="currentMode === 'time'">
-                            <div class="input-group">
-                                <label class="input-label" for="savings-timeTargetAmount">目标金额（元）</label>
-                                <div class="input-container">
-                                    <input 
-                                        type="number" 
-                                        class="input-field" 
-                                        id="savings-timeTargetAmount" 
-                                        v-model.number="targetAmount" 
-                                        placeholder="请输入目标金额"
-                                        min="0">
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label class="input-label" for="savings-monthlyDepositTime">每月存款金额（元）</label>
-                                <div class="input-container">
-                                    <input 
-                                        type="number" 
-                                        class="input-field" 
-                                        id="savings-monthlyDepositTime" 
-                                        v-model.number="monthlyDeposit" 
-                                        placeholder="请输入每月存款金额"
-                                        min="0">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label class="input-label" for="savings-initialAmount">初始金额（可选）</label>
-                            <div class="input-container">
-                                <input 
-                                    type="number" 
-                                    class="input-field" 
-                                    id="savings-initialAmount" 
-                                    v-model.number="initialAmount" 
-                                    placeholder="请输入初始存款金额"
-                                    min="0">
-                            </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label class="input-label">存款频率</label>
-                            <div class="savings-frequency-selector">
-                                <div 
-                                    class="savings-frequency-btn" 
-                                    :class="{active: frequency === 'monthly'}"
-                                    @click="frequency = 'monthly'">
-                                    每月
-                                </div>
-                                <div 
-                                    class="savings-frequency-btn" 
-                                    :class="{active: frequency === 'weekly'}"
-                                    @click="frequency = 'weekly'">
-                                    每周
-                                </div>
-                                <div 
-                                    class="savings-frequency-btn" 
-                                    :class="{active: frequency === 'yearly'}"
-                                    @click="frequency = 'yearly'">
-                                    每年
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="savings-result-card">
-                            <div class="savings-result-label">您的储蓄计划</div>
-                            
-                            <div v-if="currentMode === 'target'">
-                                <div class="savings-result-value">{{ formatCurrency(requiredMonthlyDeposit) }}</div>
-                                <div class="savings-result-label">每月需要存款金额</div>
-                                <div v-if="['weekly', 'yearly'].includes(frequency) && requiredMonthlyDeposit > 0" style="margin-top: 10px;">
-                                    按{{ frequency === 'weekly' ? '每周' : '每年' }}存款: 
-                                    <strong>{{ formatCurrency(frequencyAmount) }}</strong>
-                                </div>
-                            </div>
-                            
-                            <div v-if="currentMode === 'amount'">
-                                <div class="savings-result-value">{{ formatCurrency(totalAmount) }}</div>
-                                <div class="savings-result-label">到期总金额</div>
-                            </div>
-                            
-                            <div v-if="currentMode === 'time'">
-                                <div class="savings-result-value">{{ requiredMonths > 0 ? requiredMonths : 0 }}</div>
-                                <div class="savings-result-label">需要存款月数</div>
-                                <div v-if="requiredMonths > 0" style="margin-top: 10px;">
-                                    约 {{ Math.floor(requiredMonths / 12) }} 年 {{ requiredMonths % 12 }} 个月
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="savings-progress-container">
-                            <div class="savings-progress-header">
-                                <span>当前进度</span>
-                                <span>{{ progressPercentage }}%</span>
-                            </div>
-                            <div class="savings-progress-bar">
-                                <div 
-                                    class="savings-progress-fill" 
-                                    :style="{width: progressPercentage + '%'}">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="savings-chart-container">
-                            <canvas id="savingsChart"></canvas>
-                        </div>
-                        
-                        <div class="savings-summary">
-                            <div class="savings-summary-item">
-                                <span>目标金额:</span>
-                                <span class="savings-highlight">{{ formatCurrency(targetAmount) }}</span>
-                            </div>
-                            <div class="savings-summary-item">
-                                <span>初始金额:</span>
-                                <span>{{ formatCurrency(initialAmount) }}</span>
-                            </div>
-                            <div class="savings-summary-item">
-                                <span>每月存款:</span>
-                                <span>{{ formatCurrency(monthlyDeposit) }}</span>
-                            </div>
-                            <div class="savings-summary-item">
-                                <span>存款频率:</span>
-                                <span>{{ frequencyText }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
-    
+
     <footer class="footer">
-        <p>© 2025 多功能计算器 | 实时汇率与费用计算工具</p>
+        <p>多功能计算器 © 2025 | 汇率数据为模拟数据，仅供参考</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // =================================================================
-            // Tab Navigation
-            // =================================================================
-            const tabs = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const targetId = tab.dataset.tab;
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    tab.classList.add('active');
-                    document.getElementById(targetId).classList.add('active');
-                    
-                    // 如果切换到储蓄计算器标签，更新图表
-                    if (targetId === 'savings' && savingsVueInstance && savingsVueInstance.savingsChart) {
-                        setTimeout(() => {
-                            savingsVueInstance.savingsChart.update();
-                        }, 300);
-                    }
-                });
+        // ========== 通用标签切换逻辑 ==========
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有激活状态
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // 激活当前标签
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
             });
+        });
 
-            // =================================================================
-            // 汇率转换器
-            // =================================================================
-            const amountInput = document.getElementById('amount');
-            const fromCurrency = document.getElementById('fromCurrency');
-            const toCurrency = document.getElementById('toCurrency');
+        // ========== 汇率转换逻辑 ==========
+        // 模拟汇率数据（实际项目中可替换为真实API）
+        const exchangeRates = {
+            CNY: { USD: 0.138, EUR: 0.127, GBP: 0.109, JPY: 20.3, CAD: 0.187, AUD: 0.212, CHF: 0.125, HKD: 1.08, KRW: 182, TWD: 4.28, SGD: 0.186, THB: 4.72 },
+            USD: { CNY: 7.25, EUR: 0.92, GBP: 0.79, JPY: 147, CAD: 1.35, AUD: 1.53, CHF: 0.90, HKD: 7.82, KRW: 1320, TWD: 31.0, SGD: 1.35, THB: 34.2 },
+            EUR: { CNY: 7.86, USD: 1.09, GBP: 0.86, JPY: 160, CAD: 1.47, AUD: 1.66, CHF: 0.98, HKD: 8.51, KRW: 1438, TWD: 33.7, SGD: 1.47, THB: 37.2 },
+            GBP: { CNY: 9.17, USD: 1.27, EUR: 1.16, JPY: 185, CAD: 1.71, AUD: 1.91, CHF: 1.14, HKD: 9.88, KRW: 1670, TWD: 39.3, SGD: 1.71, THB: 43.3 },
+            JPY: { CNY: 0.049, USD: 0.0068, EUR: 0.0062, GBP: 0.0054, CAD: 0.0091, AUD: 0.010, CHF: 0.0061, HKD: 0.053, KRW: 8.97, TWD: 0.21, SGD: 0.0091, THB: 0.23 },
+            CAD: { CNY: 5.35, USD: 0.74, EUR: 0.68, GBP: 0.58, JPY: 110, AUD: 1.13, CHF: 0.66, HKD: 5.79, KRW: 978, THB: 25.3, SGD: 1.00, TWD: 22.9 },
+            AUD: { CNY: 4.72, USD: 0.65, EUR: 0.60, GBP: 0.52, JPY: 94.8, CAD: 0.88, CHF: 0.58, HKD: 5.11, KRW: 860, THB: 22.3, SGD: 0.88, TWD: 20.2 },
+            CHF: { CNY: 8.01, USD: 1.11, EUR: 1.02, GBP: 0.88, JPY: 164, CAD: 1.51, AUD: 1.72, HKD: 8.69, KRW: 1470, TWD: 34.3, SGD: 1.51, THB: 37.9 },
+            HKD: { CNY: 0.925, USD: 0.128, EUR: 0.117, GBP: 0.101, JPY: 18.9, CAD: 0.173, AUD: 0.196, CHF: 0.115, KRW: 214, TWD: 4.97, SGD: 0.173, THB: 4.37 },
+            KRW: { CNY: 0.0055, USD: 0.00076, EUR: 0.00069, GBP: 0.00060, JPY: 0.11, CAD: 0.0010, AUD: 0.0012, CHF: 0.00068, HKD: 0.0047, TWD: 0.023, SGD: 0.0010, THB: 0.026 },
+            TWD: { CNY: 0.234, USD: 0.032, EUR: 0.030, GBP: 0.025, JPY: 4.76, CAD: 0.044, AUD: 0.049, CHF: 0.029, HKD: 0.201, KRW: 43.5, SGD: 0.044, THB: 0.11 },
+            SGD: { CNY: 5.35, USD: 0.74, EUR: 0.68, GBP: 0.58, JPY: 110, CAD: 1.00, AUD: 1.13, CHF: 0.66, HKD: 5.79, KRW: 978, TWD: 22.9, THB: 25.3 },
+            THB: { CNY: 0.212, USD: 0.029, EUR: 0.027, GBP: 0.023, JPY: 4.35, CAD: 0.039, AUD: 0.045, CHF: 0.026, HKD: 0.229, KRW: 38.3, TWD: 0.091, SGD: 0.039 }
+        };
+
+        // 更新时间
+        const updateExchangeTime = () => {
+            const now = new Date();
+            document.getElementById('updateTime').textContent = now.toLocaleString('zh-CN');
+        };
+
+        // 交换货币
+        document.getElementById('swapBtn').addEventListener('click', () => {
+            const fromSelect = document.getElementById('fromCurrency');
+            const toSelect = document.getElementById('toCurrency');
+            const tempValue = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = tempValue;
+            
+            // 重新计算
+            if (document.getElementById('amount').value) {
+                convertCurrency();
+            }
+        });
+
+        // 转换货币
+        const convertCurrency = () => {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+            const errorElement = document.getElementById('errorMessage');
             const resultElement = document.getElementById('result');
-            const convertBtn = document.getElementById('convertBtn');
-            const refreshBtn = document.getElementById('refreshBtn');
-            const swapBtn = document.getElementById('swapBtn');
-            const updateTime = document.getElementById('updateTime');
-            const loadingElement = document.getElementById('loading');
-            const errorMessage = document.getElementById('errorMessage');
-            let exchangeRates = {};
 
-            async function fetchExchangeRates() {
-                showLoading(true); hideError();
-                const apiKey = '959ec28f8bf8c08f160ff7a2'; 
-                const url = `https://v6.exchangerate-api.com/v6/959ec28f8bf8c08f160ff7a2/latest/USD`;
+            // 清空错误
+            errorElement.textContent = '';
+
+            // 验证输入
+            if (amount <= 0) {
+                errorElement.textContent = '请输入有效的金额（大于0）';
+                resultElement.textContent = '0.00';
+                return;
+            }
+
+            // 显示加载
+            document.getElementById('loading').style.display = 'block';
+
+            // 模拟API请求延迟
+            setTimeout(() => {
                 try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`网络响应错误: ${response.statusText}`);
-                    const data = await response.json();
-                    if (data.result === 'success') {
-                        exchangeRates = data.conversion_rates;
-                        if (updateTime) updateTime.textContent = new Date(data.time_last_update_utc).toLocaleString('zh-CN');
-                        if (amountInput.value) convertCurrency();
-                    } else {
-                        let apiError = data['error-type'] || '未知API错误';
-                        if (apiError === 'invalid-key') apiError = 'API密钥无效或错误';
-                        else if (apiError === 'inactive-account') apiError = 'API账户未激活';
-                        throw new Error(apiError);
-                    }
-                } catch (error) { showError(`无法获取最新汇率: ${error.message}`);
-                } finally { showLoading(false); }
-            }
-            function convertCurrency() {
-                hideError();
-                const amount = parseFloat(amountInput.value);
-                if (!amountInput.value || isNaN(amount) || amount < 0) {
-                    resultElement.textContent = "0.00";
-                    if (amount < 0) showError("金额不能为负数");
-                    return;
+                    const rate = exchangeRates[fromCurrency][toCurrency];
+                    const result = (amount * rate).toFixed(2);
+                    resultElement.textContent = result;
+                    updateExchangeTime();
+                } catch (e) {
+                    errorElement.textContent = '获取汇率失败，请刷新重试';
+                    resultElement.textContent = '0.00';
+                } finally {
+                    document.getElementById('loading').style.display = 'none';
                 }
-                if (Object.keys(exchangeRates).length === 0) { showError("汇率数据未加载"); return; }
-                const rateFrom = exchangeRates[fromCurrency.value];
-                const rateTo = exchangeRates[toCurrency.value];
-                if (!rateFrom || !rateTo) { showError("所选货币汇率不可用"); return; }
-                resultElement.textContent = ((amount / rateFrom) * rateTo).toFixed(2);
+            }, 800);
+        };
+
+        // 刷新汇率
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(() => {
+                updateExchangeTime();
+                document.getElementById('loading').style.display = 'none';
+                // 重新计算当前值
+                convertCurrency();
+            }, 800);
+        });
+
+        // 绑定转换按钮
+        document.getElementById('convertBtn').addEventListener('click', convertCurrency);
+
+        // 初始化汇率时间
+        updateExchangeTime();
+
+        // ========== 费用计算逻辑 ==========
+        document.getElementById('cost-calc-button').addEventListener('click', () => {
+            const totalAmount = parseFloat(document.getElementById('cost-calc-total-amount').value) || 0;
+            const unitCost = parseFloat(document.getElementById('cost-calc-unit-cost').value) || 0;
+            const timeUnit = document.getElementById('cost-calc-time-unit').value;
+            const startDate = document.getElementById('cost-calc-start-date').value;
+            const resultElement = document.getElementById('cost-calc-result');
+
+            // 验证输入
+            if (totalAmount <= 0 || unitCost <= 0) {
+                resultElement.innerHTML = '<div class="error">请输入有效的总金额和单位费用（大于0）</div>';
+                return;
             }
-            function swapCurrencies() {
-                [fromCurrency.value, toCurrency.value] = [toCurrency.value, fromCurrency.value];
-                if (amountInput.value) convertCurrency();
-            }
-            function showLoading(show) {
-                loadingElement.style.display = show ? 'block' : 'none';
-                convertBtn.disabled = refreshBtn.disabled = show;
-            }
-            function showError(message) { errorMessage.textContent = message; errorMessage.style.display = 'block'; }
-            function hideError() { errorMessage.style.display = 'none'; }
-            fetchExchangeRates();
-            convertBtn.addEventListener('click', convertCurrency);
-            refreshBtn.addEventListener('click', fetchExchangeRates);
-            swapBtn.addEventListener('click', swapCurrencies);
-            amountInput.addEventListener('input', () => { if (amountInput.value) convertCurrency() });
 
-            // =================================================================
-            // 费用计算器
-            // =================================================================
-            const totalAmountCostInput = document.getElementById('cost-calc-total-amount');
-            const unitCostCostInput = document.getElementById('cost-calc-unit-cost');
-            const timeUnitCostSelect = document.getElementById('cost-calc-time-unit');
-            const startDateCostInput = document.getElementById('cost-calc-start-date');
-            const calculateCostBtn = document.getElementById('cost-calc-button');
-            const costResult = document.getElementById('cost-calc-result');
-
-            calculateCostBtn.addEventListener('click', () => {
-                const totalAmount = parseFloat(totalAmountCostInput.value);
-                const unitCost = parseFloat(unitCostCostInput.value);
-                const timeUnit = timeUnitCostSelect.value;
-                const startDateStr = startDateCostInput.value;
-
-                const showErrorInCost = (msg) => { costResult.innerHTML = `<div class="error">${msg}</div>`; };
-                if (isNaN(totalAmount) || totalAmount <= 0) return showErrorInCost('请输入有效的总金额');
-                if (isNaN(unitCost) || unitCost <= 0) return showErrorInCost('请输入有效的单位费用');
-
-                let dailyCost;
+            // 计算可用时长
+            const totalUnits = (totalAmount / unitCost).toFixed(2);
+            let endDate = '';
+            
+            // 如果有开始日期，计算结束日期
+            if (startDate) {
+                const start = new Date(startDate);
+                const end = new Date(start);
+                
                 switch (timeUnit) {
-                    case 'hour': dailyCost = unitCost * 24; break;
-                    case 'day': dailyCost = unitCost; break;
-                    case 'month': dailyCost = unitCost / 30; break;
-                    case 'year': dailyCost = unitCost / 365.25; break;
-                    default: dailyCost = 0;
+                    case 'hour':
+                        end.setHours(start.getHours() + parseFloat(totalUnits));
+                        break;
+                    case 'day':
+                        end.setDate(start.getDate() + parseFloat(totalUnits));
+                        break;
+                    case 'month':
+                        end.setMonth(start.getMonth() + parseFloat(totalUnits));
+                        break;
+                    case 'year':
+                        end.setFullYear(start.getFullYear() + parseFloat(totalUnits));
+                        break;
                 }
-
-                if (dailyCost <= 0) return showErrorInCost('无法计算每日费用');
-
-                const totalDays = Math.floor(totalAmount / dailyCost);
-                const finalRemaining = totalAmount - (totalDays * dailyCost);
-
-                const years = Math.floor(totalDays / 365);
-                const remainingDaysAfterYears = totalDays % 365;
-                const months = Math.floor(remainingDaysAfterYears / 30);
-                const days = remainingDaysAfterYears % 30;
                 
-                let durationString = '';
-                if (years > 0) durationString += `${years} 年 `;
-                if (months > 0) durationString += `${months} 个月 `;
-                if (days > 0 || durationString === '') durationString += `${days} 天`;
-                
-                let resultHTML = `
-                    <h3>计算结果</h3>
-                    <p>总金额 <strong>${totalAmount.toFixed(2)} 元</strong> 可使用：</p>
-                    <p><span class="highlight">${durationString.trim()}</span> (约 ${totalDays} 天)</p>`;
-
-                if (startDateStr) {
-                    const startDate = new Date(startDateStr);
-                    const endDate = new Date(startDate);
-                    endDate.setDate(endDate.getDate() + totalDays);
-                    resultHTML += `
-                        <p>开始日期: <strong>${startDate.toLocaleDateString('zh-CN')}</strong></p>
-                        <p>到期日期: <strong>${endDate.toLocaleDateString('zh-CN')}</strong></p>`;
-                }
-
-                resultHTML += `
-                    <p>最终剩余: <strong>${finalRemaining.toFixed(2)} 元</strong></p>
-                    <small>注：每月按30天，每年按365.25天估算。</small>`;
-
-                costResult.innerHTML = resultHTML;
-            });
-
-            // =================================================================
-            // 储蓄计算器
-            // =================================================================
-            let savingsVueInstance = null;
-            
-            function initSavingsCalculator() {
-                savingsVueInstance = new Vue({
-                    el: '#savings-calc-app',
-                    data: {
-                        currentMode: 'target', // target, amount, time
-                        targetAmount: null,    // 清空默认值
-                        monthlyDeposit: null,  // 清空默认值
-                        initialAmount: null,   // 清空默认值
-                        timeValue: null,       // 清空默认值
-                        timeUnit: 'months',
-                        frequency: 'monthly', // weekly, monthly, yearly
-                        savingsChart: null
-                    },
-                    computed: {
-                        // 确保所有输入均为有效数字，否则返回 0
-                        validTargetAmount() { return parseFloat(this.targetAmount) || 0; },
-                        validMonthlyDeposit() { return parseFloat(this.monthlyDeposit) || 0; },
-                        validInitialAmount() { return parseFloat(this.initialAmount) || 0; },
-                        validTimeValue() { return parseFloat(this.timeValue) || 0; },
-
-                        // 计算总月数
-                        totalMonths() {
-                            if (this.timeUnit === 'years') {
-                                return this.validTimeValue * 12;
-                            }
-                            return this.validTimeValue;
-                        },
-                        
-                        // 目标模式：计算每月需要存款金额
-                        requiredMonthlyDeposit() {
-                            const target = this.validTargetAmount;
-                            const initial = this.validInitialAmount;
-                            const months = this.totalMonths;
-
-                            if (months <= 0 || target <= initial) return 0;
-                            
-                            // 返回每月的存款要求，保留两位小数
-                            return ((target - initial) / months).toFixed(2);
-                        },
-                        
-                        // 总额模式：计算到期总金额
-                        totalAmount() {
-                            const initial = this.validInitialAmount;
-                            const monthly = this.validMonthlyDeposit;
-                            const months = this.totalMonths;
-
-                            return (initial + (monthly * months)).toFixed(2);
-                        },
-                        
-                        // 时间模式：计算需要存款月数 (向上取整)
-                        requiredMonths() {
-                            const target = this.validTargetAmount;
-                            const initial = this.validInitialAmount;
-                            const monthly = this.validMonthlyDeposit;
-
-                            if (monthly <= 0 || target <= initial) return 0;
-
-                            return Math.ceil((target - initial) / monthly);
-                        },
-                        
-                        // 根据频率计算每次存款金额
-                        frequencyAmount() {
-                            const requiredMonthly = parseFloat(this.requiredMonthlyDeposit);
-                            if (requiredMonthly <= 0) return 0;
-                            if (this.frequency === 'weekly') {
-                                return (requiredMonthly / 4.33).toFixed(2); // 近似按每月4.33周
-                            } else if (this.frequency === 'yearly') {
-                                return (requiredMonthly * 12).toFixed(2);
-                            }
-                            return requiredMonthly;
-                        },
-                        
-                        // 计算进度百分比
-                        progressPercentage() {
-                            const target = this.validTargetAmount;
-                            const initial = this.validInitialAmount;
-                            
-                            if (target <= 0) return 0;
-                            
-                            return Math.min(100, Math.round((initial / target) * 100));
-                        },
-                        
-                        // 频率文本显示
-                        frequencyText() {
-                            const texts = {
-                                'weekly': '每周',
-                                'monthly': '每月',
-                                'yearly': '每年'
-                            };
-                            return texts[this.frequency];
-                        },
-                        
-                        // 生成储蓄进度数据
-                        savingsData() {
-                            const data = [];
-                            let currentAmount = this.validInitialAmount;
-                            let totalPeriods = 0;
-                            let monthlyEquivalentDeposit = 0;
-                            
-                            // 确定计算周期和每月等效存款
-                            if (this.currentMode === 'target') {
-                                totalPeriods = this.totalMonths;
-                                monthlyEquivalentDeposit = parseFloat(this.requiredMonthlyDeposit);
-                            } 
-                            else if (this.currentMode === 'amount') {
-                                totalPeriods = this.totalMonths;
-                                monthlyEquivalentDeposit = this.validMonthlyDeposit;
-                            } 
-                            else { // time模式
-                                totalPeriods = this.requiredMonths;
-                                monthlyEquivalentDeposit = this.validMonthlyDeposit;
-                            }
-                            
-                            // 确保周期和存款额度有效
-                            if (totalPeriods <= 0 || monthlyEquivalentDeposit === 0) {
-                                // 仅显示初始金额
-                                data.push({ month: 0, amount: currentAmount });
-                                return data;
-                            }
-
-                            // 生成图表数据 (以月为单位)
-                            for (let i = 0; i <= totalPeriods; i++) {
-                                let amount = currentAmount + (i * monthlyEquivalentDeposit);
-                                
-                                // 确保最终金额不会超过目标金额太多 (针对 target/time 模式)
-                                if (this.currentMode !== 'amount' && amount > this.validTargetAmount) {
-                                    amount = this.validTargetAmount;
-                                }
-                                
-                                data.push({
-                                    month: i,
-                                    amount: amount
-                                });
-                            }
-
-                            return data;
-                        }
-                    },
-                    watch: {
-                        // 当数据变化时更新图表
-                        savingsData: {
-                            handler(newData) {
-                                this.updateChart(newData);
-                            },
-                            deep: true
-                        },
-                        currentMode(newMode, oldMode) {
-                             // 切换模式时，重置时间单位和时间值，以便用户输入
-                            if (newMode !== oldMode) {
-                                if (newMode === 'target' || newMode === 'amount') {
-                                    this.timeUnit = 'months';
-                                    this.timeValue = null; // 清空时间值
-                                }
-                            }
-                        }
-                    },
-                    mounted() {
-                        // 初始化图表
-                        this.initChart();
-                    },
-                    methods: {
-                        // 格式化货币显示
-                        formatCurrency(value) {
-                            const num = parseFloat(value);
-                            if (isNaN(num) || num === 0) return '¥0';
-                            return '¥' + num.toLocaleString('zh-CN', {
-                                maximumFractionDigits: 2 // 保留两位小数
-                            });
-                        },
-                        
-                        // 初始化图表
-                        initChart() {
-                            const ctx = document.getElementById('savingsChart').getContext('2d');
-                            this.savingsChart = new Chart(ctx, {
-                                type: 'line', // 使用折线图更适合显示累积趋势
-                                data: {
-                                    labels: this.savingsData.map(d => `第${d.month}月`),
-                                    datasets: [{
-                                        label: '储蓄金额',
-                                        data: this.savingsData.map(d => d.amount),
-                                        backgroundColor: 'rgba(67, 97, 238, 0.2)',
-                                        borderColor: 'rgba(67, 97, 238, 1)',
-                                        borderWidth: 2,
-                                        fill: true,
-                                        tension: 0.3,
-                                        pointRadius: 3
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            title: {
-                                                display: true,
-                                                text: '金额 (元)'
-                                            },
-                                            ticks: {
-                                                callback: function(value) {
-                                                    return '¥' + value.toLocaleString('zh-CN', {
-                                                        maximumFractionDigits: 0
-                                                    });
-                                                }
-                                            }
-                                        },
-                                        x: {
-                                            title: {
-                                                display: true,
-                                                text: '时间 (月)'
-                                            },
-                                            ticks: {
-                                                maxTicksLimit: 12
-                                            }
-                                        }
-                                    },
-                                    plugins: {
-                                        legend: {
-                                            display: false
-                                        },
-                                        tooltip: {
-                                            callbacks: {
-                                                label: function(context) {
-                                                    return '储蓄金额: ¥' + context.parsed.y.toLocaleString('zh-CN', {
-                                                        maximumFractionDigits: 2
-                                                    });
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        },
-                        
-                        // 更新图表数据
-                        updateChart(data) {
-                            if (this.savingsChart) {
-                                this.savingsChart.data.labels = data.map(d => `第${d.month}月`);
-                                this.savingsChart.data.datasets[0].data = data.map(d => d.amount);
-                                this.savingsChart.update();
-                            }
-                        }
-                    }
-                });
+                endDate = end.toLocaleDateString('zh-CN');
             }
-            
-            // 初始化储蓄计算器
-            initSavingsCalculator();
+
+            // 生成结果HTML
+            let timeUnitText = {
+                hour: '小时',
+                day: '天',
+                month: '个月',
+                year: '年'
+            }[timeUnit];
+
+            let resultHTML = `
+                <h3>计算结果</h3>
+                <p>总金额：<strong>¥${totalAmount.toFixed(2)}</strong></p>
+                <p>单位费用：<strong>¥${unitCost.toFixed(2)}/${timeUnitText}</strong></p>
+                <p>可用时长：<span class="highlight">${totalUnits} ${timeUnitText}</span></p>
+            `;
+
+            if (startDate && endDate) {
+                resultHTML += `
+                    <p>开始日期：<strong>${new Date(startDate).toLocaleDateString('zh-CN')}</strong></p>
+                    <p>预计结束日期：<strong>${endDate}</strong></p>
+                `;
+            }
+
+            resultHTML += `<small>提示：结果基于输入数据计算，仅供参考</small>`;
+            resultElement.innerHTML = resultHTML;
         });
     </script>
 </body>
