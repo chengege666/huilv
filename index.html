@@ -669,7 +669,7 @@
 
             // 验证输入
             if (amount <= 0) {
-                errorElement.textContent = '请输入有效的金额（大于0）';
+                errorElement.textContent = ''; // 移除「请输入有效金额」的提示，避免输入过程中干扰
                 resultElement.textContent = '0.00';
                 return;
             }
@@ -690,7 +690,7 @@
                 } finally {
                     document.getElementById('loading').style.display = 'none';
                 }
-            }, 800);
+            }, 300); // 缩短加载延迟，提升输入体验
         };
 
         // 刷新汇率
@@ -706,6 +706,14 @@
 
         // 绑定转换按钮
         document.getElementById('convertBtn').addEventListener('click', convertCurrency);
+
+        // ========== 新增：自动触发转换的核心逻辑 ==========
+        // 1. 金额输入框变化时自动转换
+        document.getElementById('amount').addEventListener('input', convertCurrency);
+        // 2. 「从」货币选择变化时自动转换
+        document.getElementById('fromCurrency').addEventListener('change', convertCurrency);
+        // 3. 「到」货币选择变化时自动转换
+        document.getElementById('toCurrency').addEventListener('change', convertCurrency);
 
         // 初始化汇率时间
         updateExchangeTime();
