@@ -432,6 +432,7 @@
     <nav class="tabs-nav">
         <button class="tab-button active" data-tab="exchange">汇率转换</button>
         <button class="tab-button" data-tab="cost">费用计算</button>
+        <button class="tab-button" data-tab="storage">磁盘转换</button>
     </nav>
     
     <main class="main-container">
@@ -597,6 +598,88 @@
                 </div>
             </div>
         </section>
+
+        <!-- 磁盘转换标签 -->
+        <section id="storage" class="tab-content">
+            <div class="calculator-container">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-hdd"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">磁盘转换器</h2>
+                            <p class="card-subtitle">存储容量单位转换工具</p>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="storage-amount">存储容量</label>
+                        <div class="input-container">
+                            <input type="number" class="input-field" id="storage-amount" placeholder="请输入存储容量" value="1" min="0.01" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="storage-from-unit">从</label>
+                        <div class="input-container">
+                            <select class="select-field" id="storage-from-unit">
+                                <option value="B">字节 (B)</option>
+                                <option value="KB">千字节 (KB)</option>
+                                <option value="MB" selected>兆字节 (MB)</option>
+                                <option value="GB">吉字节 (GB)</option>
+                                <option value="TB">太字节 (TB)</option>
+                                <option value="PB">拍字节 (PB)</option>
+                            </select>
+                            <span class="select-icon">▼</span>
+                        </div>
+                    </div>
+                    
+                    <div class="swap-container">
+                        <button class="swap-btn" id="storage-swap-btn" aria-label="交换单位">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 17L20 21M20 21L16 25M20 21H4M8 7L4 3M4 3L8 -1M4 3H20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="storage-to-unit">到</label>
+                        <div class="input-container">
+                            <select class="select-field" id="storage-to-unit">
+                                <option value="B">字节 (B)</option>
+                                <option value="KB">千字节 (KB)</option>
+                                <option value="MB">兆字节 (MB)</option>
+                                <option value="GB" selected>吉字节 (GB)</option>
+                                <option value="TB">太字节 (TB)</option>
+                                <option value="PB">拍字节 (PB)</option>
+                            </select>
+                            <span class="select-icon">▼</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-container">
+                        <div class="result-label">转换结果</div>
+                        <div class="result-value" id="storage-result">1.00</div>
+                    </div>
+                    
+                    <div class="error-message" id="storage-error-message"></div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="storage-convert-btn">
+                            <i class="fas fa-sync-alt btn-icon"></i>
+                            转换容量
+                        </button>
+                        <button class="btn btn-secondary" id="storage-reset-btn">
+                            <i class="fas fa-redo btn-icon"></i>
+                            重置
+                        </button>
+                    </div>
+                    
+                    <div id="storage-detailed-result" class="detailed-result"></div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -717,6 +800,133 @@
 
         // 初始化汇率时间
         updateExchangeTime();
+
+        // ========== 磁盘转换逻辑 ==========
+        // 存储单位转换系数（基于1024的二进制系统）
+        const storageConversionFactors = {
+            B: 1,
+            KB: 1024,
+            MB: 1024 * 1024,
+            GB: 1024 * 1024 * 1024,
+            TB: 1024 * 1024 * 1024 * 1024,
+            PB: 1024 * 1024 * 1024 * 1024 * 1024
+        };
+
+        // 存储单位显示名称
+        const storageUnitNames = {
+            B: '字节',
+            KB: '千字节',
+            MB: '兆字节',
+            GB: '吉字节',
+            TB: '太字节',
+            PB: '拍字节'
+        };
+
+        // 交换存储单位
+        document.getElementById('storage-swap-btn').addEventListener('click', () => {
+            const fromSelect = document.getElementById('storage-from-unit');
+            const toSelect = document.getElementById('storage-to-unit');
+            const tempValue = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = tempValue;
+            
+            // 重新计算
+            if (document.getElementById('storage-amount').value) {
+                convertStorage();
+            }
+        });
+
+        // 转换存储容量
+        const convertStorage = () => {
+            const amount = parseFloat(document.getElementById('storage-amount').value) || 0;
+            const fromUnit = document.getElementById('storage-from-unit').value;
+            const toUnit = document.getElementById('storage-to-unit').value;
+            const errorElement = document.getElementById('storage-error-message');
+            const resultElement = document.getElementById('storage-result');
+            const detailedResultElement = document.getElementById('storage-detailed-result');
+
+            // 清空错误
+            errorElement.textContent = '';
+
+            // 验证输入
+            if (amount <= 0) {
+                errorElement.textContent = '';
+                resultElement.textContent = '0.00';
+                detailedResultElement.innerHTML = '';
+                return;
+            }
+
+            try {
+                // 转换为字节
+                const bytes = amount * storageConversionFactors[fromUnit];
+                // 转换为目标单位
+                const result = (bytes / storageConversionFactors[toUnit]).toFixed(6);
+                
+                // 显示结果
+                resultElement.textContent = parseFloat(result).toLocaleString('zh-CN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 6
+                });
+                
+                // 生成详细结果
+                generateDetailedStorageResult(amount, fromUnit, toUnit, result, bytes);
+                
+            } catch (e) {
+                errorElement.textContent = '转换失败，请检查输入';
+                resultElement.textContent = '0.00';
+                detailedResultElement.innerHTML = '';
+            }
+        };
+
+        // 生成详细存储转换结果
+        const generateDetailedStorageResult = (amount, fromUnit, toUnit, result, bytes) => {
+            const detailedResultElement = document.getElementById('storage-detailed-result');
+            
+            let resultHTML = `
+                <h3>详细转换结果</h3>
+                <p>原始值：<strong>${amount.toLocaleString('zh-CN')} ${storageUnitNames[fromUnit]}</strong></p>
+                <p>转换结果：<span class="highlight">${parseFloat(result).toLocaleString('zh-CN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 6
+                })} ${storageUnitNames[toUnit]}</span></p>
+                <p>相当于：<strong>${bytes.toLocaleString('zh-CN')} 字节</strong></p>
+                <hr>
+                <h4>所有单位换算：</h4>
+            `;
+            
+            // 计算所有单位的换算结果
+            Object.keys(storageConversionFactors).forEach(unit => {
+                const value = (bytes / storageConversionFactors[unit]).toFixed(6);
+                resultHTML += `<p>${storageUnitNames[unit]}：<strong>${parseFloat(value).toLocaleString('zh-CN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 6
+                })} ${unit}</strong></p>`;
+            });
+            
+            resultHTML += `<small>提示：基于二进制系统（1KB = 1024B）计算</small>`;
+            detailedResultElement.innerHTML = resultHTML;
+        };
+
+        // 重置存储转换器
+        document.getElementById('storage-reset-btn').addEventListener('click', () => {
+            document.getElementById('storage-amount').value = '1';
+            document.getElementById('storage-from-unit').value = 'MB';
+            document.getElementById('storage-to-unit').value = 'GB';
+            document.getElementById('storage-result').textContent = '1.00';
+            document.getElementById('storage-error-message').textContent = '';
+            document.getElementById('storage-detailed-result').innerHTML = '';
+        });
+
+        // 绑定转换按钮
+        document.getElementById('storage-convert-btn').addEventListener('click', convertStorage);
+
+        // 自动触发转换
+        document.getElementById('storage-amount').addEventListener('input', convertStorage);
+        document.getElementById('storage-from-unit').addEventListener('change', convertStorage);
+        document.getElementById('storage-to-unit').addEventListener('change', convertStorage);
+
+        // 初始化存储转换器
+        convertStorage();
 
         // ========== 费用计算逻辑 ==========
         document.getElementById('cost-calc-button').addEventListener('click', () => {
